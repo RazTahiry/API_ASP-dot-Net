@@ -1,0 +1,8 @@
+# Build results
+bin/
+obj/
+
+# Database
+reservation_train.db
+reservation_train.db-shm
+reservation_train.db-wal
