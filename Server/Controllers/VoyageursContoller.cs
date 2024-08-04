@@ -8,7 +8,7 @@ namespace Server.Controllers
     [ApiController]
     [Route("api/v1/[controller]")]
     // Contrôleur pour gérer les opérations sur les voyageurs
-    public class VoyageursController(AppDbContext context) : ControllerBase
+    public class voyageursController(AppDbContext context) : ControllerBase
     {
         // Initialisation du contexte de la base de données
         private readonly AppDbContext _context = context;
@@ -43,7 +43,7 @@ namespace Server.Controllers
                 if (result > 0)
                     return Ok("Réservation réussie !");
 
-                return BadRequest("Échec de la réservation.");                
+                return BadRequest("Échec de la réservation.");
             }
             catch (Exception e)
             {
@@ -61,7 +61,7 @@ namespace Server.Controllers
 
             if (voyageur is null)
                 return StatusCode(404, "Réservation non trouvé.");
-            
+
             return Ok(voyageur);
         }
 
@@ -87,7 +87,7 @@ namespace Server.Controllers
                 if (result > 0)
                     return Ok("Réservation annulée avec succès !");
 
-                return BadRequest("Échec de l'annulation de la réservation.");                
+                return BadRequest("Échec de l'annulation de la réservation.");
             }
             catch (Exception e)
             {
@@ -121,8 +121,8 @@ namespace Server.Controllers
                 // Vérifie si la mise à jour a réussi
                 if (result > 0)
                     return Ok("Réservation mise à jour avec succès !");
-                
-                return BadRequest("Échec de la mise à jour de la réservation.");                
+
+                return BadRequest("Échec de la mise à jour de la réservation.");
             }
             catch (Exception e)
             {

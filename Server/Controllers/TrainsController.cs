@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Server.Data;
@@ -7,8 +8,9 @@ namespace Server.Controllers
 {
     [ApiController]
     [Route("api/v1/[controller]")]
+    [Authorize(Roles = "Admin")]
     // Contrôleur pour gérer les opérations sur les trains
-    public class TrainsController(AppDbContext context) : ControllerBase
+    public class trainsController(AppDbContext context) : ControllerBase
     {
         // Initialisation du contexte de la base de données
         private readonly AppDbContext _context = context;
@@ -43,7 +45,7 @@ namespace Server.Controllers
                 if (result > 0)
                     return Ok("Train ajouté avec succès !");
 
-                return BadRequest("On n'a pas pu ajouter le train.");                
+                return BadRequest("On n'a pas pu ajouter le train.");
             }
             catch (Exception e)
             {
@@ -76,7 +78,7 @@ namespace Server.Controllers
 
                 if (train is null)
                     return NotFound("Train non trouvé.");
-                
+
                 // Supprime le train de la base de données
                 _context.Trains.Remove(train);
 
@@ -87,7 +89,7 @@ namespace Server.Controllers
                 if (result > 0)
                     return Ok("Train supprimé avec succès !");
 
-                return BadRequest("Échec de la suppression du train.");                
+                return BadRequest("Échec de la suppression du train.");
             }
             catch (Exception e)
             {
@@ -122,7 +124,7 @@ namespace Server.Controllers
                 if (result > 0)
                     return Ok("Train mis à jour avec succès !");
 
-                return BadRequest("Échec de la mise à jour du train.");                
+                return BadRequest("Échec de la mise à jour du train.");
             }
             catch (Exception e)
             {

@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Server.Data;
@@ -7,8 +8,9 @@ namespace Server.Controllers
 {
     [ApiController]
     [Route("api/v1/[controller]")]
+    [Authorize(Roles = "Admin")]
     // Contrôleur pour gérer les opérations sur les itinéraires
-    public class ItineraireController(AppDbContext context) : ControllerBase
+    public class itinerairesController(AppDbContext context) : ControllerBase
     {
         // Initialisation du contexte de la base de données
         private readonly AppDbContext _context = context;
@@ -42,8 +44,8 @@ namespace Server.Controllers
                 // Vérifie si la sauvegarde a réussi
                 if (result > 0)
                     return Ok("Itinéraire ajouté avec succès!");
-                
-                return BadRequest("On n'a pas pu ajouter l'itinéraire.");                
+
+                return BadRequest("On n'a pas pu ajouter l'itinéraire.");
             }
             catch (Exception e)
             {
@@ -61,7 +63,7 @@ namespace Server.Controllers
 
             if (itineraire is null)
                 return NotFound("Itinéraire non trouvé.");
-            
+
             return Ok(itineraire);
         }
 
@@ -86,8 +88,8 @@ namespace Server.Controllers
                 // Vérifie si la suppression a réussi
                 if (result > 0)
                     return Ok("Itinéraire supprimé avec succès !");
-                
-                return BadRequest("Échec de la suppression de l'itinéraire.");                
+
+                return BadRequest("Échec de la suppression de l'itinéraire.");
             }
             catch (Exception e)
             {
@@ -107,11 +109,11 @@ namespace Server.Controllers
 
                 if (itineraireDansBD is null)
                     return NotFound("Itinéraire non trouvé.");
-                
+
                 // Vérifie si le code de l'itinéraire peut être modifié
                 if (itineraireDansBD.CodeItineraire != itineraire.CodeItineraire)
                     return BadRequest("Le code itinéraire ne peut pas être modifié.");
-                
+
                 // Met à jour les propriétés de l'itinéraire
                 itineraireDansBD.LieuDepart = itineraire.LieuDepart;
                 itineraireDansBD.LieuArrivee = itineraire.LieuArrivee;
@@ -125,7 +127,7 @@ namespace Server.Controllers
                 if (result > 0)
                     return Ok("Itinéraire mis à jour avec succès !");
 
-                return BadRequest("Échec de la mise à jour de l'itinéraire.");                
+                return BadRequest("Échec de la mise à jour de l'itinéraire.");
             }
             catch (Exception e)
             {

@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Server.Data;
@@ -7,8 +8,9 @@ namespace Server.Controllers
 {
     [ApiController]
     [Route("api/v1/[controller]")]
+    [Authorize(Roles = "Admin")]
     // Contrôleur pour gérer les opérations sur les catégories
-    public class CategorieController(AppDbContext context) : ControllerBase
+    public class categoriesController(AppDbContext context) : ControllerBase
     {
         // Initialisation du contexte de la base de données
         private readonly AppDbContext _context = context;
@@ -42,8 +44,8 @@ namespace Server.Controllers
                 // Vérifie si la sauvegarde a réussi
                 if (result > 0)
                     return Ok("Catégorie ajoutée avec succès !");
-                
-                return BadRequest("On n'a pas pu ajouter la catégorie.");                
+
+                return BadRequest("On n'a pas pu ajouter la catégorie.");
             }
             catch (Exception e)
             {
@@ -61,7 +63,7 @@ namespace Server.Controllers
 
             if (categorie is null)
                 return NotFound("Catégorie non trouvée.");
-            
+
             return Ok(categorie);
         }
 
@@ -87,7 +89,7 @@ namespace Server.Controllers
                 if (result > 0)
                     return Ok("Catégorie supprimée avec succès !");
 
-                return BadRequest("Échec de la suppression de la catégorie.");                
+                return BadRequest("Échec de la suppression de la catégorie.");
             }
             catch (Exception e)
             {
@@ -123,8 +125,8 @@ namespace Server.Controllers
                 // Vérifie si la mise à jour a réussi
                 if (result > 0)
                     return Ok("Catégorie mise à jour avec succès !");
-                
-                return BadRequest("Échec de la mise à jour de la catégorie.");                
+
+                return BadRequest("Échec de la mise à jour de la catégorie.");
             }
             catch (Exception e)
             {
