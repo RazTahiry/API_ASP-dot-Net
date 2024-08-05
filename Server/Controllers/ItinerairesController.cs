@@ -67,6 +67,20 @@ namespace Server.Controllers
             return Ok(itineraire);
         }
 
+        // Endpoint pour obtenir tous les trains dans un itinéraire
+        [HttpGet("{CodeItineraire}/trains")]
+        public IActionResult GetTrainsInItineraire(string CodeItineraire)
+        {
+            var trains = _context.Trains
+                .FromSqlRaw("SELECT * FROM Trains WHERE CodeItineraire = {0}", CodeItineraire)
+                .ToList();
+
+            if (trains.Count == 0)
+                return NotFound();
+
+            return Ok(trains);
+        }
+
         // Endpoint pour supprimer un itinéraire par son code
         [HttpDelete("{CodeItineraire}")]
         public async Task<IActionResult> Delete(string CodeItineraire)

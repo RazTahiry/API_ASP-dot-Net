@@ -29,12 +29,24 @@ namespace Server.Controllers
         {
             try
             {
+                // Recherche la catégorie dans la base de données par son code
+                var categorieDansBD = await _context.Categories.FindAsync(voyageur.CodeCategorie);
+
+                if (categorieDansBD is null)
+                    return NotFound("Catégorie non trouvée.");
+
+                if (categorieDansBD.NbPlaceSupporte < voyageur.NbPlace || categorieDansBD.NbPlaceSupporte <= 0)
+                    return BadRequest("Nombre de place insuffisant.");
+
                 // Vérifie si le modèle est valide
                 if (!ModelState.IsValid)
                     return BadRequest(ModelState);
 
                 // Ajoute le nouveau voyageur (réservation) à la base de données
-                await _context.AddAsync(voyageur);
+                await _context.Voyageurs.AddAsync(voyageur);
+
+                // Soustraire le nombre de place disponible par le nombre de place reservé
+                categorieDansBD.NbPlaceSupporte -= voyageur.NbPlace;
 
                 // Sauvegarde les changements dans la base de données
                 var result = await _context.SaveChangesAsync();

@@ -67,6 +67,20 @@ namespace Server.Controllers
             return Ok(train);
         }
 
+        // Endpoint pour obtenir tous les catégories dans un train
+        [HttpGet("{immatriculation}/categories")]
+        public IActionResult GetCategoriesIntrain(string immatriculation)
+        {
+            var categories = _context.Categories
+                .FromSqlRaw("SELECT * FROM Categories WHERE immatriculation = {0}", immatriculation)
+                .ToList();
+
+            if (categories.Count == 0)
+                return NotFound();
+
+            return Ok(categories);
+        }
+
         // Endpoint pour supprimer un train par son immatriculation
         [HttpDelete("{immatriculation}")]
         public async Task<IActionResult> Delete(string immatriculation)
